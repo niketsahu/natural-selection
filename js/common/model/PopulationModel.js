@@ -208,12 +208,12 @@ class PopulationModel extends PhetioObject {
 
     // clear data points
     this.totalPoints.clear();
-    this.whiteFurPoints.reset();
-    this.brownFurPoints.reset();
-    this.straightEarsPoints.reset();
-    this.floppyEarsPoints.reset();
-    this.shortTeethPoints.reset();
-    this.longTeethPoints.reset();
+    this.whiteFurPoints.clear();
+    this.brownFurPoints.clear();
+    this.straightEarsPoints.clear();
+    this.floppyEarsPoints.clear();
+    this.shortTeethPoints.clear();
+    this.longTeethPoints.clear();
 
     // reset visibility of plots
     this.totalVisibleProperty.reset();
