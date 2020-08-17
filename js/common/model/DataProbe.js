@@ -119,7 +119,7 @@ class DataProbe extends PhetioObject {
   /**
    * Gets the population count (y value) for a specific generation (x value).
    * @param {number} generation - current position of the data probe on the x axis
-   * @param {ObservableArray.<Vector2>} points - data points, x (generation) and y (population)
+   * @param {AxonArray.<Vector2>} points - data points, x (generation) and y (population)
    * @returns {number}
    * @private
    */

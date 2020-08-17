@@ -6,11 +6,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import AxonArray from '../../../../axon/js/AxonArray.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
-import ObservableArrayIO from '../../../../axon/js/ObservableArrayIO.js';
 import Property from '../../../../axon/js/Property.js';
 import PropertyIO from '../../../../axon/js/PropertyIO.js';
 import Range from '../../../../dot/js/Range.js';
@@ -94,9 +93,9 @@ class ProportionsModel extends PhetioObject {
       phetioDocumentation: 'Counts at the start of the current generation'
     } );
 
-    const previousCounts = new ObservableArray( {
+    const previousCounts = new AxonArray( {
       tandem: options.tandem.createTandem( 'previousCounts' ),
-      phetioType: ObservableArrayIO( ProportionsCountsIO ),
+      phetioElementType: ProportionsCountsIO,
       phetioDocumentation: 'Counts for previous generations, indexed by generation number'
     } );
 

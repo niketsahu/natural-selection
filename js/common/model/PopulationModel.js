@@ -6,12 +6,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import AxonArray from '../../../../axon/js/AxonArray.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import DerivedPropertyIO from '../../../../axon/js/DerivedPropertyIO.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
-import ObservableArrayIO from '../../../../axon/js/ObservableArrayIO.js';
 import Property from '../../../../axon/js/Property.js';
 import PropertyIO from '../../../../axon/js/PropertyIO.js';
 import Range from '../../../../dot/js/Range.js';
@@ -89,33 +88,33 @@ class PopulationModel extends PhetioObject {
 
     // @public data points, for total population and the population of each allele.
     // Vector2.x = generation, Vector2.y = population
-    this.totalPoints = new ObservableArray( {
+    this.totalPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'totalPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.whiteFurPoints = new ObservableArray( {
+    this.whiteFurPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'whiteFurPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.brownFurPoints = new ObservableArray( {
+    this.brownFurPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'brownFurPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.straightEarsPoints = new ObservableArray( {
+    this.straightEarsPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'straightEarsPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.floppyEarsPoints = new ObservableArray( {
+    this.floppyEarsPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'floppyEarsPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.shortTeethPoints = new ObservableArray( {
+    this.shortTeethPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'shortTeethPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
-    this.longTeethPoints = new ObservableArray( {
+    this.longTeethPoints = new AxonArray( {
       tandem: dataPointsTandem.createTandem( 'longTeethPoints' ),
-      phetioType: ObservableArrayIO( Vector2IO )
+      phetioElementType: Vector2IO
     } );
 
     // @public visibility of each data set, on the graph and data probe
@@ -208,7 +207,7 @@ class PopulationModel extends PhetioObject {
   reset() {
 
     // clear data points
-    this.totalPoints.reset();
+    this.totalPoints.clear();
     this.whiteFurPoints.reset();
     this.brownFurPoints.reset();
     this.straightEarsPoints.reset();
@@ -271,17 +270,17 @@ class PopulationModel extends PhetioObject {
 
 /**
  * Records a count if it differs from the previous data point.
- * @param {ObservableArray.<Vector2>} observableArray
+ * @param {AxonArray.<Vector2>} axonArray
  * @param {number} generation - floating point, not integer!
  * @param {number} count
  */
-function recordCount( observableArray, generation, count ) {
-  assert && assert( observableArray instanceof ObservableArray, 'invalid observableArray' );
+function recordCount( axonArray, generation, count ) {
+  assert && assert( axonArray instanceof AxonArray, 'invalid array' );
   assert && assert( NaturalSelectionUtils.isNonNegative( generation ), 'invalid generation' );
   assert && assert( NaturalSelectionUtils.isNonNegativeInteger( count ), 'invalid count' );
 
-  if ( observableArray.length === 0 || observableArray.get( observableArray.length - 1 ).y !== count ) {
-    observableArray.push( new Vector2( generation, count ) );
+  if ( axonArray.length === 0 || axonArray.get( axonArray.length - 1 ).y !== count ) {
+    axonArray.push( new Vector2( generation, count ) );
   }
 }
 

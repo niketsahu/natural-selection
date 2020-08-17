@@ -23,7 +23,6 @@ import NaturalSelectionUtils from '../NaturalSelectionUtils.js';
 import Allele from './Allele.js';
 import Bunny from './Bunny.js';
 import BunnyArray from './BunnyArray.js';
-import BunnyArrayIO from './BunnyArrayIO.js';
 import BunnyGroup from './BunnyGroup.js';
 import EnvironmentModelViewTransform from './EnvironmentModelViewTransform.js';
 import GenePool from './GenePool.js';
@@ -69,8 +68,7 @@ class BunnyCollection {
 
     // @private the dead bunnies in bunnyGroup
     this.deadBunnies = new BunnyArray( {
-      tandem: options.tandem.createTandem( 'deadBunnies' ),
-      phetioType: BunnyArrayIO
+      tandem: options.tandem.createTandem( 'deadBunnies' )
     } );
 
     // @private {Bunny[]} Recessive mutants, to be mated eagerly so that their mutation appears in the phenotype as
@@ -238,13 +236,13 @@ class BunnyCollection {
    * @public
    */
   ageBunnies() {
-    assert && assert( _.every( this.liveBunnies.getArray(), bunny => bunny.isAlive ),
+    assert && assert( _.every( this.liveBunnies, bunny => bunny.isAlive ),
       'liveBunnies contains one or more dead bunnies' );
 
     let diedCount = 0;
 
     // liveBunnies will change if any bunnies die, so operate on a copy
-    const bunnies = this.liveBunnies.getArrayCopy();
+    const bunnies = this.liveBunnies.slice();
     bunnies.forEach( bunny => {
 
       // bunny is one generation older
@@ -277,7 +275,7 @@ class BunnyCollection {
     let bornIndex = 0;
 
     // Shuffle the collection of live bunnies so that mating is random. shuffle returns a new array.
-    const bunnies = phet.joist.random.shuffle( this.liveBunnies.getArray() );
+    const bunnies = phet.joist.random.shuffle( this.liveBunnies );
     phet.log && phet.log( `mating ${bunnies.length} bunnies` );
 
     // Prioritize mating of bunnies that have a recessive mutation, so that the mutation appears in the phenotype
@@ -403,7 +401,7 @@ class BunnyCollection {
     assert && assert( NaturalSelectionUtils.isNonNegativeInteger( generation ), 'invalid generation' );
     assert && assert( Array.isArray( bunnies ), 'invalid bunnies' );
 
-    const recessiveMutantsCopy = this.recessiveMutants.getArrayCopy();
+    const recessiveMutantsCopy = this.recessiveMutants.slice();
 
     let numberOfRecessiveMutantsMated = 0;
     let numberBorn = 0;
@@ -549,7 +547,7 @@ class BunnyCollection {
   getSelectionCandidates() {
 
     // Live bunnies are candidates.
-    const bunnies = phet.joist.random.shuffle( this.liveBunnies.getArray() );
+    const bunnies = phet.joist.random.shuffle( this.liveBunnies );
 
     // Recessive mutants are not candidates until they have mated.
     // See https://github.com/phetsims/natural-selection/issues/98#issuecomment-646275437
@@ -572,7 +570,7 @@ class BunnyCollection {
     let numberPruned = 0;
 
     // This modifies the array. Iterate backwards to avoid having to make a copy.
-    const deadBunnies = this.deadBunnies.getArray();
+    const deadBunnies = this.deadBunnies;
     for ( let i = deadBunnies.length - 1; i >= 0; i-- ) {
       const bunny = deadBunnies[ i ];
       if ( currentGeneration - bunny.generation > MAX_DEAD_BUNNY_GENERATIONS &&

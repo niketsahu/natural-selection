@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import ObservableArray from '../../../../../axon/js/ObservableArray.js';
+import AxonArray from '../../../../../axon/js/AxonArray.js';
 import Property from '../../../../../axon/js/Property.js';
 import Shape from '../../../../../kite/js/Shape.js';
 import merge from '../../../../../phet-core/js/merge.js';
@@ -26,13 +26,13 @@ class PopulationPlotNode extends Node {
 
   /**
    * @param {PopulationModel} populationModel
-   * @param {ObservableArray.<Vector2>} points - data points, in model coordinates (x=Generation, y=Population)
+   * @param {AxonArray.<Vector2>} points - data points, in model coordinates (x=Generation, y=Population)
    * @param {Property.<boolean>} plotVisibleProperty - whether this plot is visible
    * @param {Object} [options]
    */
   constructor( populationModel, points, plotVisibleProperty, options ) {
     assert && assert( populationModel instanceof PopulationModel, 'invalid populationModel' );
-    assert && assert( points instanceof ObservableArray, 'invalid points' );
+    assert && assert( points instanceof AxonArray, 'invalid points' );
     assert && AssertUtils.assertPropertyOf( plotVisibleProperty, 'boolean' );
 
     options = merge( {

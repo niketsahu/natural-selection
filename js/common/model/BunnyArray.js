@@ -1,33 +1,40 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * BunnyArray is an ObservableArray of Bunny instances, with counts for each phenotype.
+ * BunnyArray is an AxonArray of Bunny instances, with counts for each phenotype.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import AxonArray from '../../../../axon/js/AxonArray.js';
 import Property from '../../../../axon/js/Property.js';
 import PropertyIO from '../../../../axon/js/PropertyIO.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import naturalSelection from '../../naturalSelection.js';
-import BunnyArrayIO from './BunnyArrayIO.js';
 import BunnyCounts from './BunnyCounts.js';
 import BunnyCountsIO from './BunnyCountsIO.js';
+import BunnyIO from './BunnyIO.js';
 
-class BunnyArray extends ObservableArray {
+class BunnyArray extends AxonArray {
 
   /**
    * @param {Object} [options]
    */
   constructor( options ) {
 
+    // Support construction via Array.prototype.splice.apply(), etc., which invoke the sub-constructor
+    if ( typeof options === 'number' ) {
+      super( options );
+      return;
+    }
+
     options = merge( {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioType: BunnyArrayIO,
+      phetioElementType: ReferenceIO( BunnyIO ),
       phetioState: false
     }, options );
 
@@ -41,13 +48,13 @@ class BunnyArray extends ObservableArray {
     } );
 
     // Update counts when a bunny is added.
-    this.addItemAddedListener( bunny => {
+    this.elementAddedEmitter.addListener( bunny => {
       this.countsProperty.value = this.countsProperty.value.plus( bunny );
       assert && assert( this.countsProperty.value.totalCount === this.length, 'counts out of sync' );
     } );
 
     // Update counts when a bunny is removed.
-    this.addItemRemovedListener( bunny => {
+    this.elementRemovedEmitter.addListener( bunny => {
       this.countsProperty.value = this.countsProperty.value.minus( bunny );
       assert && assert( this.countsProperty.value.totalCount === this.length, 'counts out of sync' );
     } );
