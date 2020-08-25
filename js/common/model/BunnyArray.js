@@ -24,12 +24,6 @@ class BunnyArray extends AxonArray {
    */
   constructor( options ) {
 
-    // Support construction via Array.prototype.splice.apply(), etc., which invoke the sub-constructor
-    if ( typeof options === 'number' ) {
-      super( options );
-      return;
-    }
-
     options = merge( {
 
       // phet-io
